@@ -59,7 +59,7 @@ def run_menu(patients, next_patient_id, appointments, next_appointment_id):
         elif choice == "2":
             consult_agenda(appointments)
 
-        # 3) Agendar cita (por Patient ID)
+        # 3) Agendar cita (por ID de paciente)
         elif choice == "3":
             raw = input("Ingrese ID de paciente: ").strip()
             if not raw.isdigit():
@@ -77,7 +77,7 @@ def run_menu(patients, next_patient_id, appointments, next_appointment_id):
                 appointments, patients, next_appointment_id, patient_id
             )
 
-        # 4) Cancelar cita (por Appointment ID) y opcional reagendar
+        # 4) Cancelar cita (por ID de cita) y opcional reagendar
 
         elif choice == "4":
             canceled = cancel_appointment_flow(appointments)

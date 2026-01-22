@@ -54,8 +54,8 @@ def show_agenda_for_date(appointments, date_str):
 
     for a in sorted(day, key=lambda x: x["time"]):
         print(
-            f"{a['time']} | Appointment ID: {a['appointment_id']} | "
-            f"Patient ID: {a['patient_id']} | Motivo: {a['reason']}"
+            f"{a['time']} | ID de cita: {a['appointment_id']} | "
+            f"ID de paciente: {a['patient_id']} | Motivo: {a['reason']}"
         )
 
     print("-" * 40)
