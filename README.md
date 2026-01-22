@@ -22,17 +22,15 @@ El proyecto utiliza una **arquitectura modular**, permitiendo escalabilidad y ma
 
 ## 🗂️ Estructura del proyecto
 
+```text
 veterinaria_reservas/
-│
 ├── main.py
 ├── README.md
-│
 └── modules/
-├── menu.py
-├── patients.py
-├── reservations.py
-├── data_input.py
-
+    ├── menu.py
+    ├── patients.py
+    ├── reservations.py
+    └── data_input.py
 
 ### 📄 Descripción de módulos
 
