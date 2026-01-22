@@ -1,19 +1,18 @@
 from datetime import datetime
 
 
+# Valida la fecha y hora para agendar citas
 def is_weekday(date_str):
-    """
-    Valida que la fecha sea lunes a viernes y tenga formato DD-MM-YYYY
-    """
     try:
         date_obj = datetime.strptime(date_str, "%d-%m-%Y")
-        return date_obj.weekday() < 5  # 0=lunes ... 4=viernes
+        return date_obj.weekday() < 5  # 0 = lunes, 4 = viernes
     except ValueError:
         return False
 
-# Generar franjas horarias de 09:00 a 14:00 en intervalos de 30 minutos
+
+# Genera franja horaria de 09:00 a 14:00 en intervalos de 30 minutos
 def generate_time_slots():
-    
+
     slots = []
     hour = 9
     minute = 0
@@ -49,20 +48,24 @@ def show_agenda_for_date(appointments, date_str):
         print(f"No hay citas para {date_str}.")
         return
 
-    day_sorted = sorted(day, key=lambda x: x["time"])
-    print(f"\n--- AGENDA {date_str} ---")
-    for a in day_sorted:
+    print("\n" + "-" * 40)
+    print(f"AGENDA DEL DÍA {date_str}")
+    print("-" * 40)
+
+    for a in sorted(day, key=lambda x: x["time"]):
         print(
-            f"Hora: {a['time']} | Appointment ID: {a['appointment_id']} "
-            f"| Patient ID: {a['patient_id']} | Motivo: {a['reason']}"
+            f"{a['time']} | Appointment ID: {a['appointment_id']} | "
+            f"Patient ID: {a['patient_id']} | Motivo: {a['reason']}"
         )
+
+    print("-" * 40)
 
 
 def consult_agenda(appointments):
-    date_str = input("Ingrese fecha (YYYY-MM-DD): ").strip()
+    date_str = input("Ingrese fecha (DD-MM-YYYY): ").strip()
 
     if not is_weekday(date_str):
-        print("❌ Solo se permiten fechas de lunes a viernes.")
+        print("Fecha inválida o no es día hábil (lunes a viernes).")
         return
 
     show_agenda_for_date(appointments, date_str)
@@ -74,10 +77,10 @@ def consult_agenda(appointments):
 
 
 def book_appointment_flow(appointments, patients, next_appointment_id, patient_id):
-    date_str = input("Ingrese fecha (YYYY-MM-DD): ").strip()
+    date_str = input("Ingrese fecha (DD-MM-YYYY): ").strip()
 
     if not is_weekday(date_str):
-        print("❌ Solo se permiten reservas de lunes a viernes.")
+        print("Fecha inválida o no es día hábil (lunes a viernes).")
         return None, next_appointment_id
 
     available = get_available_times_for_date(appointments, date_str)
@@ -93,8 +96,6 @@ def book_appointment_flow(appointments, patients, next_appointment_id, patient_i
         return None, next_appointment_id
 
     reason = input("Motivo de la cita: ").strip()
-    if reason == "":
-        reason = "Consulta"
 
     new_appointment = {
         "appointment_id": next_appointment_id,
@@ -107,7 +108,7 @@ def book_appointment_flow(appointments, patients, next_appointment_id, patient_i
     appointments.append(new_appointment)
     next_appointment_id += 1
 
-    print(f"✅ Cita agendada. Appointment ID: {new_appointment['appointment_id']}")
+    print(f"Cita agendada. ID de cita: {new_appointment['appointment_id']}")
     return new_appointment, next_appointment_id
 
 
@@ -116,27 +117,31 @@ def cancel_appointment_flow(appointments):
         print("No hay citas registradas.")
         return None
 
-    raw = input("Ingrese Appointment ID a cancelar: ").strip()
+    raw = input("Ingrese ID de cita a cancelar: ").strip()
     if not raw.isdigit():
-        print("Appointment ID inválido.")
+        print("ID de cita inválido.")
         return None
 
     app_id = int(raw)
 
     for i, a in enumerate(appointments):
         if a["appointment_id"] == app_id:
-            confirm = input(
-                f"¿Seguro que desea cancelar la cita {app_id} "
-                f"del {a['date']} a las {a['time']}? (s/n): "
-            ).strip().lower()
+            confirm = (
+                input(
+                    f"¿Seguro que desea cancelar la cita {app_id} "
+                    f"del {a['date']} a las {a['time']}? (s/n): "
+                )
+                .strip()
+                .lower()
+            )
 
             if confirm == "s":
                 appointments.pop(i)
-                print("✅ Cita cancelada.")
+                print("Cita cancelada.")
                 return a
             else:
                 print("Cancelación abortada.")
                 return None
 
-    print("No se encontró una cita con ese Appointment ID.")
+    print("No se encontró una cita con ese ID de cita.")
     return None

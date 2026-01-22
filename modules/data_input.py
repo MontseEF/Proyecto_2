@@ -1,4 +1,4 @@
-#Recolección de datos del paciente
+# Recolección de datos del paciente
 def collect_patient_data():
     owner_name = input("Nombre del tutor: ").strip()
     owner_phone = input("Teléfono: ").strip()
@@ -17,5 +17,5 @@ def collect_patient_data():
         "owner_phone": owner_phone,
         "patient_name": patient_name,
         "species": species,
-        "age": age
+        "age": age,
     }
